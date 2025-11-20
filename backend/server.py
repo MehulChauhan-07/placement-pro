@@ -368,7 +368,6 @@ async def update_drive(drive_id: str, drive_data: DriveCreateRequest, authorizat
 @api_router.delete("/drives/{drive_id}")
 async def delete_drive(drive_id: str, authorization: Optional[str] = Header(None), request: Request = None):
     await get_admin_user(authorization, request)
-        raise HTTPException(status_code=403, detail="Admin access required")
     
     result = await db.placement_drives.delete_one({"id": drive_id})
     if result.deleted_count == 0:
