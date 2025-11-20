@@ -96,7 +96,19 @@ export const DashboardLayout = ({ children }) => {
                 alt={user?.name}
                 className="user-avatar"
               />
-              <span>{user?.name}</span>
+              <div className="user-details">
+                <span className="user-name">{user?.name}</span>
+                {user?.role === "admin" && (
+                  <span className="role-badge admin-badge" data-testid="admin-badge">
+                    Admin
+                  </span>
+                )}
+                {user?.role === "student" && (
+                  <span className="role-badge student-badge" data-testid="student-badge">
+                    Student
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </header>

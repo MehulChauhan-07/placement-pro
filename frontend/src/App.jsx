@@ -3,6 +3,7 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { AdminRoute } from "@/components/AdminRoute";
 import { SessionHandler } from "@/components/SessionHandler";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { LandingPage } from "@/pages/LandingPage";
@@ -85,11 +86,11 @@ export const App = () => (
         <Route
           path="/admin"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <DashboardLayout>
                 <AdminPanel />
               </DashboardLayout>
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
       </Routes>

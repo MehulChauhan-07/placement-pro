@@ -195,6 +195,14 @@ async def get_current_user(authorization: Optional[str] = Header(None), request:
     
     return User(**user)
 
+# Admin authorization helper
+async def get_admin_user(authorization: Optional[str] = Header(None), request: Request = None) -> User:
+    """Get current user and verify admin role"""
+    user = await get_current_user(authorization, request)
+    if user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return user
+
 # Auth Routes
 @api_router.post("/auth/session")
 async def create_session(session_id: str = Header(None, alias="X-Session-ID"), response: Response = None):
@@ -326,9 +334,7 @@ async def get_drive(drive_id: str):
 
 @api_router.post("/drives")
 async def create_drive(drive_data: DriveCreateRequest, authorization: Optional[str] = Header(None), request: Request = None):
-    user = await get_current_user(authorization, request)
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+    await get_admin_user(authorization, request)
     
     drive = PlacementDrive(**drive_data.model_dump())
     drive_dict = drive.model_dump()
@@ -342,9 +348,7 @@ async def create_drive(drive_data: DriveCreateRequest, authorization: Optional[s
 
 @api_router.put("/drives/{drive_id}")
 async def update_drive(drive_id: str, drive_data: DriveCreateRequest, authorization: Optional[str] = Header(None), request: Request = None):
-    user = await get_current_user(authorization, request)
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+    await get_admin_user(authorization, request)
     
     update_data = drive_data.model_dump()
     update_data["application_deadline"] = update_data["application_deadline"].isoformat()
@@ -363,9 +367,7 @@ async def update_drive(drive_id: str, drive_data: DriveCreateRequest, authorizat
 
 @api_router.delete("/drives/{drive_id}")
 async def delete_drive(drive_id: str, authorization: Optional[str] = Header(None), request: Request = None):
-    user = await get_current_user(authorization, request)
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+    await get_admin_user(authorization, request)
     
     result = await db.placement_drives.delete_one({"id": drive_id})
     if result.deleted_count == 0:
@@ -405,9 +407,7 @@ async def get_my_applications(authorization: Optional[str] = Header(None), reque
 
 @api_router.get("/applications/drive/{drive_id}")
 async def get_drive_applications(drive_id: str, authorization: Optional[str] = Header(None), request: Request = None):
-    user = await get_current_user(authorization, request)
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+    await get_admin_user(authorization, request)
     
     applications = await db.applications.find({"drive_id": drive_id}, {"_id": 0}).to_list(1000)
     
@@ -422,9 +422,7 @@ async def get_drive_applications(drive_id: str, authorization: Optional[str] = H
 
 @api_router.put("/applications/{application_id}/status")
 async def update_application_status(application_id: str, status_update: ApplicationStatusUpdate, authorization: Optional[str] = Header(None), request: Request = None):
-    user = await get_current_user(authorization, request)
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+    await get_admin_user(authorization, request)
     
     result = await db.applications.update_one(
         {"id": application_id},
@@ -505,9 +503,7 @@ async def get_resources():
 
 @api_router.post("/resources")
 async def create_resource(resource_data: ResourceCreateRequest, authorization: Optional[str] = Header(None), request: Request = None):
-    user = await get_current_user(authorization, request)
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+    await get_admin_user(authorization, request)
     
     resource = Resource(**resource_data.model_dump())
     resource_dict = resource.model_dump()
@@ -518,9 +514,7 @@ async def create_resource(resource_data: ResourceCreateRequest, authorization: O
 
 @api_router.delete("/resources/{resource_id}")
 async def delete_resource(resource_id: str, authorization: Optional[str] = Header(None), request: Request = None):
-    user = await get_current_user(authorization, request)
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+    await get_admin_user(authorization, request)
     
     result = await db.resources.delete_one({"id": resource_id})
     if result.deleted_count == 0:
@@ -536,9 +530,7 @@ async def get_announcements():
 
 @api_router.post("/announcements")
 async def create_announcement(announcement_data: AnnouncementCreateRequest, authorization: Optional[str] = Header(None), request: Request = None):
-    user = await get_current_user(authorization, request)
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+    await get_admin_user(authorization, request)
     
     announcement = Announcement(**announcement_data.model_dump())
     ann_dict = announcement.model_dump()
@@ -550,9 +542,7 @@ async def create_announcement(announcement_data: AnnouncementCreateRequest, auth
 # Admin Stats
 @api_router.get("/admin/stats")
 async def get_admin_stats(authorization: Optional[str] = Header(None), request: Request = None):
-    user = await get_current_user(authorization, request)
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin access required")
+    await get_admin_user(authorization, request)
     
     total_students = await db.users.count_documents({"role": "student"})
     total_drives = await db.placement_drives.count_documents({})
