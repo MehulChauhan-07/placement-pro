@@ -583,11 +583,22 @@ h6 {
   width: 100%;
   max-width: 500px;
   padding: 1rem 1.5rem;
-  background: rgba(15, 17, 30, 0.7);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
   color: var(--text-primary);
   font-size: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(91, 141, 238, 0.1);
+  background: var(--bg-card-hover);
+}
+.search-bar input::placeholder {
+  color: var(--text-muted);
 }
 .drives-grid {
   display: grid;
@@ -644,17 +655,40 @@ h6 {
 .apply-btn {
   width: 100%;
   padding: 0.875rem;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: var(--gradient-primary);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(91, 141, 238, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.apply-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s;
+}
+.apply-btn:hover::after {
+  width: 300px;
+  height: 300px;
 }
 .apply-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(91, 141, 238, 0.4);
+  box-shadow: 0 8px 24px rgba(91, 141, 238, 0.5);
+}
+.apply-btn:active {
+  transform: translateY(0);
 }
 /* Applications */
 .empty-state {
@@ -773,17 +807,22 @@ h6 {
 .start-btn {
   width: 100%;
   padding: 0.875rem;
-  background: linear-gradient(135deg, var(--secondary), var(--accent));
+  background: var(--gradient-accent);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(124, 111, 237, 0.3);
 }
 .start-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(124, 111, 237, 0.4);
+  box-shadow: 0 8px 24px rgba(124, 111, 237, 0.5);
+}
+.start-btn:active {
+  transform: translateY(0);
 }
 /* Resources */
 .resources-grid {
@@ -869,17 +908,22 @@ h6 {
 }
 .edit-btn {
   padding: 0.875rem 2rem;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: var(--gradient-primary);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(91, 141, 238, 0.3);
 }
 .edit-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(91, 141, 238, 0.4);
+  box-shadow: 0 8px 24px rgba(91, 141, 238, 0.5);
+}
+.edit-btn:active {
+  transform: translateY(0);
 }
 .profile-form {
   display: flex;
@@ -897,15 +941,22 @@ h6 {
 }
 .form-group input {
   padding: 0.875rem 1rem;
-  background: rgba(15, 17, 30, 0.7);
+  background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--text-primary);
   font-size: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
 }
 .form-group input:focus {
   outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(91, 141, 238, 0.1);
+  background: var(--bg-card-hover);
+}
+.form-group input::placeholder {
+  color: var(--text-muted);
 }
 .form-actions {
   display: flex;
@@ -915,17 +966,22 @@ h6 {
 .save-btn {
   flex: 1;
   padding: 0.875rem;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: var(--gradient-primary);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(91, 141, 238, 0.3);
 }
 .save-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(91, 141, 238, 0.4);
+  box-shadow: 0 8px 24px rgba(91, 141, 238, 0.5);
+}
+.save-btn:active {
+  transform: translateY(0);
 }
 .cancel-btn {
   flex: 1;
@@ -933,13 +989,18 @@ h6 {
   background: rgba(239, 68, 68, 0.1);
   color: var(--error);
   border: 1px solid var(--error);
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
 }
 .cancel-btn:hover {
   background: rgba(239, 68, 68, 0.2);
+  transform: translateY(-1px);
+}
+.cancel-btn:active {
+  transform: translateY(0);
 }
 /* Admin */
 .stats-grid {
